@@ -5,9 +5,12 @@ import lombok.ToString;
 
 /**
  * 抽象票据类
+ * @author tianshuo
  */
 @ToString
 public abstract class AbstractTicket implements Ticket{
+
+    protected String id;
 
     /**
      * 保存用户信息
@@ -36,10 +39,18 @@ public abstract class AbstractTicket implements Ticket{
         this.lastTimeUsed = System.currentTimeMillis();
     }
 
-    public abstract void setUser(User user);
+    protected abstract void setUser(User user);
 
     public final User getUserInfo(){
         return this.user;
+    }
+
+    protected abstract void setId(String id);
+
+
+    @Override
+    public String getId(){
+        return this.id;
     }
 
     @Override

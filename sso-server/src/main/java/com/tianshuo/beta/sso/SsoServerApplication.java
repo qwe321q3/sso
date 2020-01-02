@@ -4,6 +4,9 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author tianshuo
+ */
 @SpringBootApplication
 @MapperScan("com.tianshuo.beta.sso.dao")
 public class SsoServerApplication {

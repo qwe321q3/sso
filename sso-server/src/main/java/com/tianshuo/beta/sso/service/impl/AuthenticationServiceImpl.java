@@ -5,6 +5,9 @@ import com.tianshuo.beta.sso.dao.UserMapper;
 import com.tianshuo.beta.sso.model.User;
 import com.tianshuo.beta.sso.model.UserExample;
 import com.tianshuo.beta.sso.service.AuthenticationService;
+import com.tianshuo.beta.sso.ticket.LoginTicketImpl;
+import com.tianshuo.beta.sso.ticket.TicketException;
+import com.tianshuo.beta.sso.ticket.registry.TicketRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +19,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private TicketRegistry ticketRegistry;
+
     /**
      * 登录接口
      *
      * @param user
      * @return
      */
+    @Override
     public User login(User user) {
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
@@ -43,6 +50,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      *
      * @return
      */
+    @Override
     public boolean logout() {
         return true;
     }
@@ -50,11 +58,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     /**
      * 票据校验接口
      *
-     * @param ticket
+     * @param ticketId
      * @return
      */
-    public User validate(String ticket) {
-        return null;
+    @Override
+    public User validate( String ticketId) {
+        LoginTicketImpl ticket = (LoginTicketImpl) ticketRegistry.getTicket(ticketId);
+        if(ticket!=null){
+            return ticket.getUserInfo();
+        }
+
+        throw new TicketException("票据失效");
     }
 
 }

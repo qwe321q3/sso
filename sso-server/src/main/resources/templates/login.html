@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script>
+        $(function () {
+            $("#sbtn").click(function () {
+
+                var url = "/login";
+                var clientUrl = $("#clientUrl").text();
+                if(clientUrl!=null &clientUrl != ''){
+                    url+="?clientUrl="+clientUrl;
+                }
+                $.ajax({
+                    url: url,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    data: JSON.stringify({loginName: $("#loginName").val(), password: $("#password").val()}),
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                    }, contentType: "json"
+                })
+            });
+
+        });
+    </script>
+</head>
+<body>
+<span id="clientUrl" style="display: none;" th:text="${#httpServletRequest.getParameter('clientUrl')}"></span>
+
+
+用户名：<input id="loginName" name="loginName" value="tianshuo"/>
+密码 :<input id="password" type="password" name="password" value="tian1234"/>
+<br/>
+<button id="sbtn">提交</button>
+</body>
+</html>

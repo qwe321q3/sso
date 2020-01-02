@@ -22,9 +22,9 @@ public interface AuthenticationService {
 
     /**
      * 票据校验接口
-     * @param ticket
+     * @param ticketId
      * @return
      */
-    User validate(String ticket);
+    User validate(String ticketId);
 
 }

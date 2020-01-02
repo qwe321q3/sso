@@ -2,8 +2,9 @@ package com.tianshuo.beta.sso.dao;
 
 import com.tianshuo.beta.sso.model.User;
 import com.tianshuo.beta.sso.model.UserExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface UserMapper {
     long countByExample(UserExample example);
