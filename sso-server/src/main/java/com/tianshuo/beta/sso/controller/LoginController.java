@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,31 +30,47 @@ public class LoginController {
     @Autowired
     private TicketRegistry ticketRegistry;
 
-    @GetMapping("/login")
-    public String loginPage(){
-        return "login";
-    }
+//    @GetMapping("/login.html")
+//    public String loginPage(){
+//        return "login";
+//    }
 
 
-    @PostMapping("/login")
-    public String login(@RequestBody User user, HttpServletResponse response, HttpServletRequest request) {
+    @RequestMapping("/login")
+    public String login(@RequestBody(required = false) User user, HttpServletResponse response, HttpServletRequest request) {
+        String tickeId = CookieUtil.getCookieValueByName(request, CookieUtil.TGC_KEY);
+        String url = request.getParameter(GlobalConstant.CLIENT_KEY);
+        if(!StringUtils.isEmpty(tickeId)){
+            System.out.println("已登录tciket: "+tickeId);
+            if(!StringUtils.isEmpty(url)){
+                url+=(url.contains("?")?"&":"?")+"ticket="+tickeId;
+                return "redirect:"+url;
+            }else{
+                return "index";
+            }
+        }
+
+        if(user ==null){
+            return "login";
+        }
+
         User userInfo = authenticationService.login(user);
         if (userInfo != null) {
-            String url = request.getParameter(GlobalConstant.CLIENT_KEY);
-            final LoginTicketImpl ticket = new LoginTicketImpl();
-            ticket.setUser(userInfo);
+            final LoginTicketImpl loginTicket = new LoginTicketImpl();
+            loginTicket.setUser(userInfo);
             //设置cookie
-            CookieUtil.addCookie(response, CookieUtil.TGC_KEY, ticket.getId(), -1);
+            CookieUtil.addCookie(response, CookieUtil.TGC_KEY, loginTicket.getId(), -1);
 
-            System.out.println(ticket);
-            ticketRegistry.addTicket(ticket);
+            System.out.println(loginTicket);
+            ticketRegistry.addTicket(loginTicket);
             if(!StringUtils.isEmpty(url)){
-                url+=(url.contains("?")?"&":"?")+"ticket="+ticket.getId();
-               return "redirect:"+url;
+                url+=(url.contains("?")?"&":"?")+"ticket="+loginTicket.getId();
+                return "redirect:"+url;
             }
         }
 
         return "index";
     }
+
 
 }
