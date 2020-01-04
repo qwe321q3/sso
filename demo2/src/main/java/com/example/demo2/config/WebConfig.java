@@ -23,15 +23,4 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/").setViewName("login");
     }
 
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("GET", "HEAD", "POST","PUT", "DELETE", "OPTIONS")
-                //设置为true
-                .allowCredentials(true)
-                .maxAge(3600);;
-    }
-
 }

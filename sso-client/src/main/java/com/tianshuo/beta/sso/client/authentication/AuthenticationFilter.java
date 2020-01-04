@@ -1,8 +1,8 @@
 package com.tianshuo.beta.sso.client.authentication;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.tianshuo.beta.sso.client.dto.Result;
-import com.tianshuo.beta.sso.client.util.CookieUtil;
 import com.tianshuo.beta.sso.client.util.HttpUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,7 +17,8 @@ import java.io.IOException;
  *
  * @author tianshuo
  */
-public class AuthenticationFilter implements Filter {
+public class AuthenticationFilter implements Filter{
+
 
     private final String USER_KEY = "user";
 
@@ -37,6 +38,26 @@ public class AuthenticationFilter implements Filter {
         casServerUrlPrefix = filterConfig.getInitParameter("casServerUrlPrefix");
     }
 
+    /**
+     * 校验成功回调方法
+     * @param request
+     * @param response
+     * @param assertion
+     */
+    protected void onSuccessfulValidation(final HttpServletRequest request, final HttpServletResponse response,
+                                          final User assertion) {
+        // nothing to do here.
+    }
+
+    /**
+     * 校验失败回调方法
+     * @param request
+     * @param response
+     */
+    protected void onFailedValidation(final HttpServletRequest request, final HttpServletResponse response) {
+        // nothing to do here.
+    }
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
@@ -46,10 +67,10 @@ public class AuthenticationFilter implements Filter {
             filterChain.doFilter(request,response);
         }
         String clientUrl =  request.getRequestURL().toString();
-
         final HttpSession session = request.getSession(true);
 
         User user = (User) session.getAttribute(USER_KEY);
+        System.out.println("sessionId:  "+session.getId());
         System.out.println("session: "+user);
         if(user!=null){
             filterChain.doFilter(servletRequest, servletResponse);
@@ -59,17 +80,28 @@ public class AuthenticationFilter implements Filter {
         String ticketId = request.getParameter("ticket");
 
         if(StringUtils.isNotEmpty(ticketId)){
+            System.out.println("票据信息："+ticketId);
             String url = casServerUrlPrefix+"/ticketValidate?ticket="+ticketId;
-            HttpUtil client = new HttpUtil(url);
-            client.call();
-            Result<User> result = (Result<User>) JSON.parseObject(client.getResponse(),Result.class);
-            System.out.println("用户信息："+result.getData());
-            System.out.println(clientUrl);
-            if(result.isSuccess()){
-                session.setAttribute(USER_KEY,result.getData());
-                filterChain.doFilter(servletRequest, servletResponse);
-                return;
-            }else{
+            try {
+                HttpUtil client = new HttpUtil(url);
+                client.call();
+                Result<User> result = JSON.parseObject(client.getResponse(),new TypeReference<Result<User>>() {});
+                if(result.isSuccess()){
+                    if(result.getData() instanceof User){
+                        User userInfo = result.getData();
+                        session.setAttribute(USER_KEY,userInfo);
+                        onSuccessfulValidation(request, response, user);
+                    }
+
+                    filterChain.doFilter(servletRequest, servletResponse);
+                    return ;
+                }else{
+                    response.sendRedirect(casServerUrlPrefix+"/login?clientUrl="+clientUrl);
+                    return;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                onFailedValidation(request, response);
                 response.sendRedirect(casServerUrlPrefix+"/login?clientUrl="+clientUrl);
                 return;
             }
@@ -85,7 +117,11 @@ public class AuthenticationFilter implements Filter {
 
     }
 
-
+    /**
+     * 路径匹配规则包含
+     * @param request
+     * @return
+     */
     private boolean isRequestUrlExcluded(final HttpServletRequest request) {
         final StringBuffer urlBuffer = request.getRequestURL();
         if (request.getQueryString() != null) {

@@ -37,6 +37,10 @@ public final class InMemoryRegistry implements TicketRegistry {
     @Override
     public void addTicket(final Ticket ticket) {
         Assert.notNull(ticket, "ticket cannot be null");
+        Ticket ticket1 = this.getTicket(ticket.getId());
+        if(ticket1!=null){
+            this.deleteTicket(ticket.getId());
+        }
         if (log.isDebugEnabled()) {
             log.debug("Added ticket [{}] to registry", ticket.getId());
         }

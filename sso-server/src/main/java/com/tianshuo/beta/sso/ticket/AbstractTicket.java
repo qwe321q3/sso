@@ -12,10 +12,7 @@ public abstract class AbstractTicket implements Ticket{
 
     protected String id;
 
-    /**
-     * 保存用户信息
-     */
-    protected User user;
+
 
     /**
      * 创建时间
@@ -39,14 +36,7 @@ public abstract class AbstractTicket implements Ticket{
         this.lastTimeUsed = System.currentTimeMillis();
     }
 
-    protected abstract void setUser(User user);
-
-    public final User getUserInfo(){
-        return this.user;
-    }
-
     protected abstract void setId(String id);
-
 
     @Override
     public String getId(){

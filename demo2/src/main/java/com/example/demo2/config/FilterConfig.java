@@ -16,7 +16,7 @@ public class FilterConfig {
         bean.setFilter(new AuthenticationFilter());
         Map<String, String> initMap = new HashMap<>();
         initMap.put("pattern","jsp");
-        initMap.put("casServerUrlPrefix","http://localhost");
+        initMap.put("casServerUrlPrefix","http://localhost/validateLogin");
         bean.setInitParameters(initMap);
         bean.addUrlPatterns("/*");
         return bean;

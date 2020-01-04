@@ -12,13 +12,14 @@ import java.util.Map;
 public class CookieUtil {
 
     public static final String TGC_KEY = "TGC";
+
     /**
      * 添加cookie
      *
      * @param response
      * @param name
      * @param value
-     * @param maxAge 有效时间
+     * @param maxAge   有效时间
      */
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
         Cookie cookie = new Cookie(name, value);
@@ -44,6 +45,24 @@ public class CookieUtil {
             }
         }
         return cookieMap;
+    }
+
+    /**
+     * 删除全部cookie
+     */
+    public static void invalidCookie(HttpServletRequest request, HttpServletResponse response, String name) {
+        Cookie[] cookies = request.getCookies();
+        if (null != cookies) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(name)) {
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
+                    break;
+                }
+
+            }
+        }
     }
 
     /**
