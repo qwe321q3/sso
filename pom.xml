@@ -8,6 +8,9 @@
     <modules>
         <module>sso-client</module>
         <module>sso-server</module>
+        <module>demo1</module>
+        <module>demo2</module>
+        
     </modules>
     <packaging>pom</packaging>
     <name>sso</name>
