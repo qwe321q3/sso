@@ -1,9 +1,11 @@
 package com.tianshuo.beta.sso.controller;
 
 import com.tianshuo.beta.sso.service.AuthenticationService;
+import com.tianshuo.beta.sso.util.CommonUtil;
 import com.tianshuo.beta.sso.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,10 +25,16 @@ public class LogoutController {
 
     @RequestMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
+
         String ticketId = CookieUtil.getCookieValueByName(request, CookieUtil.TGC_KEY);
+
+        if(StringUtils.isEmpty(ticketId)){
+            return "login";
+        }
         authenticationService.logout(ticketId);
         //删除cookie
         CookieUtil.invalidCookie(request, response, CookieUtil.TGC_KEY);
+
         return "login";
     }
 

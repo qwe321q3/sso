@@ -62,12 +62,26 @@ public class AuthenticationFilter implements Filter{
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+
+        final HttpSession session = request.getSession(true);
         //不需要登录的资源直接通过
         if(isRequestUrlExcluded(request)){
             filterChain.doFilter(request,response);
         }
+
+
+        //单点登出
+        String logout = request.getParameter("logOut");
+        if(StringUtils.isNotEmpty(logout)){
+            System.out.println("收到退出通知，退出。");
+            session.invalidate();
+            response.sendRedirect(casServerUrlPrefix+"/login");
+            return;
+        }
+
+
         String clientUrl =  request.getRequestURL().toString();
-        final HttpSession session = request.getSession(true);
+
 
         User user = (User) session.getAttribute(USER_KEY);
         System.out.println("sessionId:  "+session.getId());
@@ -96,7 +110,7 @@ public class AuthenticationFilter implements Filter{
                     filterChain.doFilter(servletRequest, servletResponse);
                     return ;
                 }else{
-                    response.sendRedirect(casServerUrlPrefix+"/login?clientUrl="+clientUrl);
+                    response.sendRedirect(casServerUrlPrefix+"/validateLogin?clientUrl="+clientUrl);
                     return;
                 }
             } catch (Exception e) {

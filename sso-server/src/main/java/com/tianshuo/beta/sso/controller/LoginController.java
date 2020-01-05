@@ -7,6 +7,7 @@ import com.tianshuo.beta.sso.ticket.LoginTicket;
 import com.tianshuo.beta.sso.ticket.LoginTicketImpl;
 import com.tianshuo.beta.sso.ticket.ServiceTicket;
 import com.tianshuo.beta.sso.ticket.registry.TicketRegistry;
+import com.tianshuo.beta.sso.util.CommonUtil;
 import com.tianshuo.beta.sso.util.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(User user, HttpServletResponse response, HttpServletRequest request){
-        String url = request.getParameter(GlobalConstant.CLIENT_KEY);
+        String url = CommonUtil.constructClientUrl(request);
         User userInfo = authenticationService.login(user);
         if (userInfo != null) {
             final LoginTicketImpl loginTicket = new LoginTicketImpl();
@@ -58,8 +59,7 @@ public class LoginController {
             ticketRegistry.addTicket(loginTicket);
             ticketRegistry.addTicket(serviceTicket);
             if (!StringUtils.isEmpty(url)) {
-                url += (url.contains("?") ? "&" : "?") + "ticket=" + serviceTicket.getId();
-                return "redirect:" + url;
+                return "redirect:" + CommonUtil.constructUrlRedirectTo(serviceTicket,url);
             }
         }
 
@@ -71,7 +71,7 @@ public class LoginController {
     @RequestMapping("/validateLogin")
     public String validateLogin(HttpServletResponse response, HttpServletRequest request) {
         String loginTicketId = CookieUtil.getCookieValueByName(request, CookieUtil.TGC_KEY);
-        String url = request.getParameter(GlobalConstant.CLIENT_KEY);
+        String url = CommonUtil.constructClientUrl(request);
 
         if(!StringUtils.isEmpty(loginTicketId)) {
 
@@ -82,8 +82,7 @@ public class LoginController {
                 ticketRegistry.addTicket(serviceTicket);
                 log.debug("已存在ticket: {}", loginTicketId);
                 if (!StringUtils.isEmpty(url)) {
-                    url += (url.contains("?") ? "&" : "?") + "ticket=" + serviceTicket.getId();
-                    return "redirect:" + url;
+                    return "redirect:" + CommonUtil.constructUrlRedirectTo(serviceTicket,url);
                 } else {
 //                return "redirect:"+defaultHomePage;
                     return "index";

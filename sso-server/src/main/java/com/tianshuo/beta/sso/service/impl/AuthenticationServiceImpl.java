@@ -10,6 +10,7 @@ import com.tianshuo.beta.sso.ticket.LoginTicketImpl;
 import com.tianshuo.beta.sso.ticket.ServiceTicket;
 import com.tianshuo.beta.sso.ticket.TicketException;
 import com.tianshuo.beta.sso.ticket.registry.TicketRegistry;
+import com.tianshuo.beta.sso.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,10 +66,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             log.debug("logout ticket [{}] ..",ticketId);
         }
 
+        //发送业务系统登出指令
+        LoginTicket loginTicket = (LoginTicket) ticketRegistry.getTicket(ticketId);
+
+        List<String> clientUrls = loginTicket.getServiceList();
+
+        for (String clientUrl: clientUrls) {
+            HttpUtil client = new HttpUtil(clientUrl);
+            client.setRequest("logout=logout");
+            client.call();
+        }
+
         //删除登录key
         ticketRegistry.deleteTicket(ticketId);
 
-        //发送业务系统登出指令
+
 
         return true;
     }
