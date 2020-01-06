@@ -16,7 +16,7 @@ public class RegexUrlPatternMatcherStrategy implements UrlPatternMatcherStrategy
 
     @Override
     public boolean matches(String url) {
-        return this.pattern.matcher(url).matches();
+        return this.pattern.matcher(url).find();
     }
 
     @Override

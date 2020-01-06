@@ -119,6 +119,7 @@ public class AuthenticationFilter implements Filter {
         //不需要登录的资源直接通过
         if (isRequestUrlExcluded(request)) {
             filterChain.doFilter(request, response);
+            return;
         }
 
 

@@ -2,6 +2,7 @@ package com.example.demo1.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class IndexController {
@@ -9,5 +10,11 @@ public class IndexController {
     @RequestMapping("/hello")
     public String hello() {
         return "index";
+    }
+
+    @RequestMapping("/test")
+    @ResponseBody
+    public String test() {
+        return "test";
     }
 }

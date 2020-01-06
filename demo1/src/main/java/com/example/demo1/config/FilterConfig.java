@@ -18,7 +18,7 @@ public class FilterConfig {
         FilterRegistrationBean bean = new FilterRegistrationBean();
         bean.setFilter(new AuthenticationFilter());
         Map<String, String> initMap = new HashMap<>();
-        initMap.put("pattern", "/js/*|/img/*|/static/*|/css/*");
+        initMap.put("pattern", "/js/*|/img/*|/static/*|/css/*|/test/*");
         initMap.put("patternType", "regex");
         initMap.put("casServerUrlPrefix", "http://localhost");
         bean.setInitParameters(initMap);
