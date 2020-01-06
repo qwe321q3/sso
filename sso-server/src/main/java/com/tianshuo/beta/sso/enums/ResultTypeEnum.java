@@ -3,10 +3,10 @@ package com.tianshuo.beta.sso.enums;
 import lombok.Getter;
 
 @Getter
-public enum  ResultTypeEnum {
+public enum ResultTypeEnum {
 
-    SUCCESS(true,"操作成功"),
-    ERROR(false,"操作失败");
+    SUCCESS(true, "操作成功"),
+    ERROR(false, "操作失败");
 
     private boolean code;
     private String desc;

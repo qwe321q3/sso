@@ -2,6 +2,7 @@ package com.tianshuo.beta.sso.constant;
 
 /**
  * 公共常量类
+ *
  * @author tianshuo
  */
 public class GlobalConstant {

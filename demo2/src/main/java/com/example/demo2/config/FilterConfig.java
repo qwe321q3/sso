@@ -11,14 +11,16 @@ import java.util.Map;
 @Configuration
 public class FilterConfig {
     @Bean
-    public FilterRegistrationBean filterRegistrationBean(){
+    public FilterRegistrationBean filterRegistrationBean() {
         FilterRegistrationBean bean = new FilterRegistrationBean();
         bean.setFilter(new AuthenticationFilter());
         Map<String, String> initMap = new HashMap<>();
-        initMap.put("pattern","jsp");
-        initMap.put("casServerUrlPrefix","http://localhost");
+        initMap.put("pattern", "/js/*|/img/*|/static/*|/css/*");
+        initMap.put("patternType", "regex");
+        initMap.put("casServerUrlPrefix", "http://localhost");
         bean.setInitParameters(initMap);
         bean.addUrlPatterns("/*");
+        bean.setOrder(5);
         return bean;
     }
 }

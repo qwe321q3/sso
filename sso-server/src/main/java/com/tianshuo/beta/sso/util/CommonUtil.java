@@ -13,25 +13,27 @@ public class CommonUtil {
 
     /**
      * 构造clietUrl
+     *
      * @param request
      * @return
      */
-    public static String constructClientUrl(HttpServletRequest request){
+    public static String constructClientUrl(HttpServletRequest request) {
         String url = request.getParameter(GlobalConstant.CLIENT_KEY);
-        if(StringUtils.isEmpty(url)){
+        if (StringUtils.isEmpty(url)) {
             return null;
         }
-        return  url;
+        return url;
     }
 
     /**
      * 构造跳转URL
+     *
      * @param ticket
      * @param clientUrl
      * @return
      */
-    public static String constructUrlRedirectTo(Ticket ticket,String clientUrl){
-      return clientUrl+=(clientUrl.contains("?") ? "&" : "?") + "ticket=" + ticket.getId();
+    public static String constructUrlRedirectTo(Ticket ticket, String clientUrl) {
+        return clientUrl += (clientUrl.contains("?") ? "&" : "?") + "ticket=" + ticket.getId();
     }
 
 }

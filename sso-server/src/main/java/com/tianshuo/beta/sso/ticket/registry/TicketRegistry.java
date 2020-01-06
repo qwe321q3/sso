@@ -6,18 +6,19 @@ import java.util.Collection;
 
 /**
  * 票据注册接口
- *
  */
 public interface TicketRegistry {
 
     /**
      * 保存票据
+     *
      * @param ticket
      */
     void addTicket(Ticket ticket);
 
     /**
      * 根据id删除票据
+     *
      * @param ticketId
      * @return
      */
@@ -25,6 +26,7 @@ public interface TicketRegistry {
 
     /**
      * 根据票据Id获取票据信息
+     *
      * @param ticketId
      * @return
      */
@@ -32,6 +34,7 @@ public interface TicketRegistry {
 
     /**
      * 获取全部票据信息
+     *
      * @return
      */
     Collection<Ticket> getAllTicket();

@@ -9,6 +9,7 @@ public interface AuthenticationService {
 
     /**
      * 登录接口
+     *
      * @param user
      * @return
      */
@@ -16,6 +17,7 @@ public interface AuthenticationService {
 
     /**
      * 登出接口
+     *
      * @param ticketId
      * @return
      */
@@ -23,6 +25,7 @@ public interface AuthenticationService {
 
     /**
      * 票据校验接口
+     *
      * @param ticketId
      * @return
      */
@@ -30,6 +33,7 @@ public interface AuthenticationService {
 
     /**
      * 校验登录票是否存在
+     *
      * @param loginTicketId
      * @return
      */

@@ -17,37 +17,40 @@ public class GlobalExceptionHandler {
 
     /**
      * 登录异常
+     *
      * @param e
      * @return
      */
     @ExceptionHandler(LoginException.class)
     @ResponseBody
-    public Result handleException(LoginException e){
-        log.error("错误信息:{}",e);
+    public Result handleException(LoginException e) {
+        log.error("错误信息:{}", e);
         return Result.fail(e.getMessage());
     }
 
     /**
      * 处理所有业务异常
+     *
      * @param e
      * @return
      */
     @ExceptionHandler(ServiceException.class)
     @ResponseBody
-    public Result handleBusinessException(ServiceException e){
-        log.error("错误信息:{}",e);
+    public Result handleBusinessException(ServiceException e) {
+        log.error("错误信息:{}", e);
         return Result.fail(e.getMessage());
     }
 
     /**
      * 处理所有不可知的异常
+     *
      * @param e
      * @return
      */
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public Result handleException(Exception e){
-        log.error("错误信息:{}",e);
+    public Result handleException(Exception e) {
+        log.error("错误信息:{}", e);
         return Result.fail(e.getMessage());
     }
 

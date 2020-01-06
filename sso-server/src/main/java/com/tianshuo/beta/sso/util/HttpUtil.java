@@ -111,7 +111,7 @@ public class HttpUtil {
         try {
             URL logoutUrl = new URL(this.sendUrl);
             String output = this.request;
-            connection = (HttpURLConnection)logoutUrl.openConnection();
+            connection = (HttpURLConnection) logoutUrl.openConnection();
             connection.setDoInput(true);
             connection.setDoOutput(true);
             connection.setUseCaches(false);
@@ -127,7 +127,7 @@ public class HttpUtil {
             outStrm.close();
             bufferReader = new BufferedReader(new InputStreamReader(connection.getInputStream(), this.charsetName));
 
-            for(String line = null; (line = bufferReader.readLine()) != null; this.response = this.response + line) {
+            for (String line = null; (line = bufferReader.readLine()) != null; this.response = this.response + line) {
             }
 
             if (null == this.response || "".equals(this.response)) {
@@ -136,7 +136,7 @@ public class HttpUtil {
 
             var7 = true;
         } catch (SocketTimeoutException var17) {
-            throw new RuntimeException("Socket Timeout Detected while attempting to send message to ["+ this.sendUrl + "]");
+            throw new RuntimeException("Socket Timeout Detected while attempting to send message to [" + this.sendUrl + "]");
         } catch (Exception var18) {
             throw new RuntimeException("Error Sending message to url endpoint [" + this.sendUrl + "].  Error is [" + var18.getMessage() + "]");
         } finally {
@@ -164,7 +164,7 @@ public class HttpUtil {
 
         try {
             URL logoutUrl = new URL(reqUrl);
-            connection = (HttpURLConnection)logoutUrl.openConnection();
+            connection = (HttpURLConnection) logoutUrl.openConnection();
             connection.setDoInput(true);
             connection.setDoOutput(true);
             connection.setUseCaches(false);
@@ -181,7 +181,7 @@ public class HttpUtil {
             String line = null;
             StringBuilder response = new StringBuilder();
 
-            while((line = bufferReader.readLine()) != null) {
+            while ((line = bufferReader.readLine()) != null) {
                 response.append(line);
             }
 

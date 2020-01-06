@@ -1,7 +1,7 @@
 package com.tianshuo.beta.sso.ticket;
 
-import com.tianshuo.beta.sso.model.User;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.util.UUID;
@@ -13,6 +13,7 @@ import java.util.UUID;
  */
 @Data
 @ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 public class ServiceTicketImpl extends AbstractTicket implements ServiceTicket {
 
     private LoginTicket loginTicket;
@@ -25,20 +26,19 @@ public class ServiceTicketImpl extends AbstractTicket implements ServiceTicket {
     public ServiceTicketImpl(LoginTicket loginTicket, String service) {
         this.loginTicket = loginTicket;
         this.service = service;
-        this.setId(gerateId());
+        this.setId(generateId());
     }
 
     public ServiceTicketImpl() {
-        this.setId(gerateId());
+        this.setId(generateId());
     }
 
-    private String gerateId(){
+    private String generateId() {
         StringBuffer stringBuffer = new StringBuffer(prx);
         stringBuffer.append("-");
         stringBuffer.append(UUID.randomUUID());
         return stringBuffer.toString();
     }
-
 
 
     @Override
@@ -61,6 +61,7 @@ public class ServiceTicketImpl extends AbstractTicket implements ServiceTicket {
         this.loginTicket = loginTicket;
     }
 
+    @Override
     public String getService() {
         return service;
     }

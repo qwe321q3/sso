@@ -1,17 +1,16 @@
 package com.tianshuo.beta.sso.ticket;
 
-import com.tianshuo.beta.sso.model.User;
 import lombok.ToString;
 
 /**
  * 抽象票据类
+ *
  * @author tianshuo
  */
 @ToString
-public abstract class AbstractTicket implements Ticket{
+public abstract class AbstractTicket implements Ticket {
 
     protected String id;
-
 
 
     /**
@@ -27,7 +26,7 @@ public abstract class AbstractTicket implements Ticket{
     /**
      * 更新票据时间
      */
-    protected final void updateState(){
+    protected final void updateState() {
         this.lastTimeUsed = System.currentTimeMillis();
     }
 
@@ -39,7 +38,7 @@ public abstract class AbstractTicket implements Ticket{
     protected abstract void setId(String id);
 
     @Override
-    public String getId(){
+    public String getId() {
         return this.id;
     }
 

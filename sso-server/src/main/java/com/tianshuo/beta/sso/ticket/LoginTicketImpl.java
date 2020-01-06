@@ -23,9 +23,9 @@ public class LoginTicketImpl extends AbstractTicket implements LoginTicket {
     protected User user;
 
     /**
-     * 保存service列表
+     * 保存服务票据列表
      */
-    private final List<String> serviceList = new ArrayList<>();
+    private final List<ServiceTicket> serviceTicketsList = new ArrayList<>();
 
     public LoginTicketImpl() {
         StringBuffer stringBuffer = new StringBuffer(prx);
@@ -52,28 +52,31 @@ public class LoginTicketImpl extends AbstractTicket implements LoginTicket {
 
     /**
      * 生成服务票据
+     *
      * @param loginTicket
      * @param service
      * @return
      */
     @Override
     public ServiceTicket generateServiceTicket(LoginTicket loginTicket, String service) {
-        ServiceTicketImpl serviceTicket = new ServiceTicketImpl(loginTicket,service);
-        loginTicket.getServiceList().add(service);
+        ServiceTicketImpl serviceTicket = new ServiceTicketImpl(loginTicket, service);
+        loginTicket.getServiceTicketList().add(serviceTicket);
         return serviceTicket;
     }
 
     /**
      * 记录签发服务票据的地址
+     *
      * @return
      */
     @Override
-    public List<String> getServiceList() {
-        return serviceList;
+    public List<ServiceTicket> getServiceTicketList() {
+        return this.serviceTicketsList;
     }
 
     /**
      * 获取用户信息
+     *
      * @return
      */
     @Override

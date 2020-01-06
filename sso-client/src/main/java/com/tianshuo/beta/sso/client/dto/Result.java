@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * 统一返回值
+ *
  * @param <T>
  */
 public class Result<T> implements Serializable {

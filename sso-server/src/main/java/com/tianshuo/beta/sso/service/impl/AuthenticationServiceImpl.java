@@ -6,7 +6,6 @@ import com.tianshuo.beta.sso.model.User;
 import com.tianshuo.beta.sso.model.UserExample;
 import com.tianshuo.beta.sso.service.AuthenticationService;
 import com.tianshuo.beta.sso.ticket.LoginTicket;
-import com.tianshuo.beta.sso.ticket.LoginTicketImpl;
 import com.tianshuo.beta.sso.ticket.ServiceTicket;
 import com.tianshuo.beta.sso.ticket.TicketException;
 import com.tianshuo.beta.sso.ticket.registry.TicketRegistry;
@@ -46,7 +45,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         criteria.andPasswordEqualTo(user.getPassword());
         criteria.andStatusEqualTo("0");
         List<User> userList = userMapper.selectByExample(userExample);
-        if(userList!=null&&userList.size()>0){
+        if (userList != null && userList.size() > 0) {
 
             User userInfo = userList.get(0);
             return userInfo;
@@ -62,24 +61,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      */
     @Override
     public boolean logout(String ticketId) {
-        if(log.isDebugEnabled()){
-            log.debug("logout ticket [{}] ..",ticketId);
+        if (log.isDebugEnabled()) {
+            log.debug("logout ticket [{}] ..", ticketId);
         }
 
         //发送业务系统登出指令
         LoginTicket loginTicket = (LoginTicket) ticketRegistry.getTicket(ticketId);
 
-        List<String> clientUrls = loginTicket.getServiceList();
+        List<ServiceTicket> serviceTicketList = loginTicket.getServiceTicketList();
 
-        for (String clientUrl: clientUrls) {
-            HttpUtil client = new HttpUtil(clientUrl);
-            client.setRequest("logout=logout");
+        for (ServiceTicket serviceTicket : serviceTicketList) {
+            HttpUtil client = new HttpUtil(serviceTicket.getService());
+            client.setRequest("logout=logout&ticket=" + serviceTicket.getId());
             client.call();
         }
 
         //删除登录key
         ticketRegistry.deleteTicket(ticketId);
-
 
 
         return true;
@@ -88,16 +86,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     /**
      * 票据校验接口
      * 1、服务票据一次失效
+     *
      * @param serviceTicketId
      * @return
      */
     @Override
-    public User validate( String serviceTicketId) {
-        if(log.isDebugEnabled()){
-            log.debug("validate ticket [{}] ..",serviceTicketId);
+    public User validate(String serviceTicketId) {
+        if (log.isDebugEnabled()) {
+            log.debug("validate ticket [{}] ..", serviceTicketId);
         }
         ServiceTicket serviceTicket = (ServiceTicket) ticketRegistry.getTicket(serviceTicketId);
-        if(serviceTicket!=null){
+        if (serviceTicket != null) {
             LoginTicket loginTicket = (LoginTicket) ticketRegistry.getTicket(serviceTicket.getLoginTicket().getId());
             ticketRegistry.deleteTicket(serviceTicketId);
             return loginTicket.getUserInfo();
@@ -108,15 +107,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     /**
      * 校验登录票是否存在
+     *
      * @param loginTicketId
      * @return
      */
     @Override
-    public boolean tgtValidate(String loginTicketId){
-        if(log.isDebugEnabled()){
-            log.debug("validate loginTicketId [{}] ..",loginTicketId);
+    public boolean tgtValidate(String loginTicketId) {
+        if (log.isDebugEnabled()) {
+            log.debug("validate loginTicketId [{}] ..", loginTicketId);
         }
-        return  ticketRegistry.getTicket(loginTicketId)!=null;
+        return ticketRegistry.getTicket(loginTicketId) != null;
     }
 
 

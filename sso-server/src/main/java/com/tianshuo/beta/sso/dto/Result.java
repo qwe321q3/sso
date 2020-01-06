@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 /**
  * 统一返回值
+ *
  * @param <T>
  */
 @Data
@@ -34,34 +35,35 @@ public class Result<T> implements Serializable {
         this.data = data;
     }
 
-    public static <T> Result<T> success(){
-        return success(true,ResultTypeEnum.SUCCESS.getDesc());
+    public static <T> Result<T> success() {
+        return success(true, ResultTypeEnum.SUCCESS.getDesc());
     }
 
-    public static <T> Result<T> success(T t){
-        Result<T> result = new Result<>(true,ResultTypeEnum.SUCCESS.getDesc(),t);
+    public static <T> Result<T> success(T t) {
+        Result<T> result = new Result<>(true, ResultTypeEnum.SUCCESS.getDesc(), t);
         return result;
     }
 
-    public static <T> Result<T> success(String message){
-        Result<T> result = new Result<>(true,message);
+    public static <T> Result<T> success(String message) {
+        Result<T> result = new Result<>(true, message);
         return result;
     }
 
-    public static <T> Result<T> success(boolean success,String message){
-        Result<T> result = new Result<>(success,message);
+    public static <T> Result<T> success(boolean success, String message) {
+        Result<T> result = new Result<>(success, message);
         return result;
     }
 
-    public static <T> Result<T> fail(){
-        return fail(false,ResultTypeEnum.ERROR.getDesc());
-    }
-    public static <T> Result<T> fail(String message){
-        return fail(false,message);
+    public static <T> Result<T> fail() {
+        return fail(false, ResultTypeEnum.ERROR.getDesc());
     }
 
-    public static <T> Result<T> fail(boolean success,String message){
-        Result<T> result = new Result<>(success,message);
+    public static <T> Result<T> fail(String message) {
+        return fail(false, message);
+    }
+
+    public static <T> Result<T> fail(boolean success, String message) {
+        Result<T> result = new Result<>(success, message);
         return result;
     }
 

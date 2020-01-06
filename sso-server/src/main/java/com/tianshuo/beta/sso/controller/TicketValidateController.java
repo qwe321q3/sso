@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 票据验证控制
+ *
  * @author tianshuo
  */
 @Controller

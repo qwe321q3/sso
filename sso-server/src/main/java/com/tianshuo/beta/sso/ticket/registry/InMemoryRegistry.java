@@ -32,13 +32,14 @@ public final class InMemoryRegistry implements TicketRegistry {
 
     /**
      * 保存票据信息
+     *
      * @param ticket
      */
     @Override
     public void addTicket(final Ticket ticket) {
         Assert.notNull(ticket, "ticket cannot be null");
         Ticket ticket1 = this.getTicket(ticket.getId());
-        if(ticket1!=null){
+        if (ticket1 != null) {
             this.deleteTicket(ticket.getId());
         }
         if (log.isDebugEnabled()) {
@@ -49,6 +50,7 @@ public final class InMemoryRegistry implements TicketRegistry {
 
     /**
      * 删除票据信息
+     *
      * @param ticketId
      * @return
      */
@@ -65,6 +67,7 @@ public final class InMemoryRegistry implements TicketRegistry {
 
     /**
      * 获取票据信息
+     *
      * @param ticketId
      * @return
      */
@@ -84,6 +87,7 @@ public final class InMemoryRegistry implements TicketRegistry {
 
     /**
      * 获取全部票据信息
+     *
      * @return
      */
     @Override

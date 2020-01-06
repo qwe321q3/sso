@@ -1,6 +1,5 @@
 package com.tianshuo.beta.sso.controller;
 
-import com.tianshuo.beta.sso.constant.GlobalConstant;
 import com.tianshuo.beta.sso.model.User;
 import com.tianshuo.beta.sso.service.AuthenticationService;
 import com.tianshuo.beta.sso.ticket.LoginTicket;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,12 +40,12 @@ public class LoginController {
     private TicketRegistry ticketRegistry;
 
     @GetMapping("/login")
-    public String loginPage(){
+    public String loginPage() {
         return "login";
     }
 
     @PostMapping("/login")
-    public String login(User user, HttpServletResponse response, HttpServletRequest request){
+    public String login(User user, HttpServletResponse response, HttpServletRequest request) {
         String url = CommonUtil.constructClientUrl(request);
         User userInfo = authenticationService.login(user);
         if (userInfo != null) {
@@ -55,11 +53,11 @@ public class LoginController {
             loginTicket.setUser(userInfo);
             //设置cookie
             CookieUtil.addCookie(response, CookieUtil.TGC_KEY, loginTicket.getId(), -1);
-            ServiceTicket serviceTicket = loginTicket.generateServiceTicket(loginTicket,url);
+            ServiceTicket serviceTicket = loginTicket.generateServiceTicket(loginTicket, url);
             ticketRegistry.addTicket(loginTicket);
             ticketRegistry.addTicket(serviceTicket);
             if (!StringUtils.isEmpty(url)) {
-                return "redirect:" + CommonUtil.constructUrlRedirectTo(serviceTicket,url);
+                return "redirect:" + CommonUtil.constructUrlRedirectTo(serviceTicket, url);
             }
         }
 
@@ -67,13 +65,12 @@ public class LoginController {
     }
 
 
-
     @RequestMapping("/validateLogin")
     public String validateLogin(HttpServletResponse response, HttpServletRequest request) {
         String loginTicketId = CookieUtil.getCookieValueByName(request, CookieUtil.TGC_KEY);
         String url = CommonUtil.constructClientUrl(request);
 
-        if(!StringUtils.isEmpty(loginTicketId)) {
+        if (!StringUtils.isEmpty(loginTicketId)) {
 
             if (authenticationService.tgtValidate(loginTicketId)) {
                 LoginTicket loginTicket = (LoginTicket) ticketRegistry.getTicket(loginTicketId);
@@ -82,7 +79,7 @@ public class LoginController {
                 ticketRegistry.addTicket(serviceTicket);
                 log.debug("已存在ticket: {}", loginTicketId);
                 if (!StringUtils.isEmpty(url)) {
-                    return "redirect:" + CommonUtil.constructUrlRedirectTo(serviceTicket,url);
+                    return "redirect:" + CommonUtil.constructUrlRedirectTo(serviceTicket, url);
                 } else {
 //                return "redirect:"+defaultHomePage;
                     return "index";
