@@ -4,6 +4,7 @@ import com.tianshuo.beta.sso.model.User;
 import lombok.Data;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -15,7 +16,7 @@ import java.util.UUID;
  */
 @Data
 @ToString(callSuper = true)
-public class LoginTicketImpl extends AbstractTicket implements LoginTicket {
+public class LoginTicketImpl extends AbstractTicket implements LoginTicket, Serializable {
 
     /**
      * 保存用户信息

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -14,7 +15,7 @@ import java.util.UUID;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
-public class ServiceTicketImpl extends AbstractTicket implements ServiceTicket {
+public class ServiceTicketImpl extends AbstractTicket implements ServiceTicket, Serializable {
 
     private LoginTicket loginTicket;
 

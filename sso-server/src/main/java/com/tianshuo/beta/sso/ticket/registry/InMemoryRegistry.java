@@ -13,9 +13,10 @@ import java.util.Map;
 
 /**
  * 票据信息注册内存实现
+ * @author tianshuo
  */
 @Slf4j
-@Service
+//@Service
 public final class InMemoryRegistry implements TicketRegistry {
 
     /**
@@ -38,8 +39,7 @@ public final class InMemoryRegistry implements TicketRegistry {
     @Override
     public void addTicket(final Ticket ticket) {
         Assert.notNull(ticket, "ticket cannot be null");
-        Ticket ticket1 = this.getTicket(ticket.getId());
-        if (ticket1 != null) {
+        if (this.cache.containsKey(ticket.getId())) {
             this.deleteTicket(ticket.getId());
         }
         if (log.isDebugEnabled()) {
