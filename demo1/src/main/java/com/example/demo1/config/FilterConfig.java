@@ -20,7 +20,7 @@ public class FilterConfig {
         Map<String, String> initMap = new HashMap<>();
         initMap.put("pattern", "/js/*|/img/*|/static/*|/css/*|/test/*");
         initMap.put("patternType", "regex");
-        initMap.put("casServerUrlPrefix", "http://localhost");
+        initMap.put("ssoServerUrlPrefix", "http://localhost");
         bean.setInitParameters(initMap);
         bean.addUrlPatterns("/*");
         bean.setOrder(5);
