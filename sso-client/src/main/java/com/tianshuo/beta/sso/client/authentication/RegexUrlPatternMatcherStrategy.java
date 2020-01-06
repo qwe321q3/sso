@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 /**
  * 正则表达式路径匹配策略
- *
+ * 部分匹配
  * @author tianshuo
  */
 public class RegexUrlPatternMatcherStrategy implements UrlPatternMatcherStrategy {
