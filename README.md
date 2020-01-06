@@ -1,7 +1,7 @@
 # sso
  单点登录框架
 
-# springboot 客户端配置
+# SpringBoot 客户端配置
 
 ```
    @Bean
@@ -19,7 +19,7 @@
     }
 ```
 
-# springmvc 客户端配置
+# SpringMVC 客户端配置
 
 ```
  <filter>
@@ -33,7 +33,7 @@
             <param-name>patternType</param-name>
             <param-value>regex</param-value>
         </init-param>
-	       <init-param>
+        <init-param>
             <param-name>pattern</param-name>
             <param-value>/js/*|/img/*|/static/*|/css/*|/test/*</param-value>
         </init-param>
