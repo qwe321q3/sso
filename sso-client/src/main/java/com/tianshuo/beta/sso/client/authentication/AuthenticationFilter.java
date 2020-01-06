@@ -6,6 +6,8 @@ import com.tianshuo.beta.sso.client.dto.Result;
 import com.tianshuo.beta.sso.client.session.SessionHandler;
 import com.tianshuo.beta.sso.client.util.HttpUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +23,8 @@ import java.util.Map;
  * @author tianshuo
  */
 public class AuthenticationFilter implements Filter {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(AuthenticationFilter.class);
 
 
     private final String USER_KEY = "user";
@@ -57,7 +61,7 @@ public class AuthenticationFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         pattern = filterConfig.getInitParameter("pattern");
         casServerUrlPrefix = filterConfig.getInitParameter("casServerUrlPrefix");
         patternType = filterConfig.getInitParameter("patternType");
@@ -74,11 +78,11 @@ public class AuthenticationFilter implements Filter {
                     ignoreUrlPatternMatcherStrategyClass.setPattern(pattern);
                 }
             } catch (InstantiationException e) {
-                e.printStackTrace();
+                LOGGER.error("{}",e);
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                LOGGER.error("{}",e);
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                LOGGER.error("{}",e);
             }
 
 
@@ -90,9 +94,9 @@ public class AuthenticationFilter implements Filter {
     /**
      * 校验成功回调方法
      *
-     * @param request
-     * @param response
-     * @param assertion
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
+     * @param assertion 用户信息
      */
     protected void onSuccessfulValidation(final HttpServletRequest request, final HttpServletResponse response,
                                           final User assertion) {
@@ -102,8 +106,8 @@ public class AuthenticationFilter implements Filter {
     /**
      * 校验失败回调方法
      *
-     * @param request
-     * @param response
+     * @param request  HttpServletRequest
+     * @param response  HttpServletResponse
      */
     protected void onFailedValidation(final HttpServletRequest request, final HttpServletResponse response) {
         // nothing to do here.
@@ -115,7 +119,6 @@ public class AuthenticationFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         final HttpSession session = request.getSession();
-        System.out.println("sessionId:  " + session.getId());
         //不需要登录的资源直接通过
         if (isRequestUrlExcluded(request)) {
             filterChain.doFilter(request, response);
@@ -128,7 +131,7 @@ public class AuthenticationFilter implements Filter {
         String ticketId = request.getParameter("ticket");
 
         if (StringUtils.isNotEmpty(logout) && StringUtils.isNotEmpty(ticketId)) {
-            System.out.println("收到退出通知，退出。");
+            LOGGER.debug("收到退出通知，退出。");
             SessionHandler.removeSession(ticketId);
             response.sendRedirect(casServerUrlPrefix + "/login");
             return;
@@ -137,8 +140,6 @@ public class AuthenticationFilter implements Filter {
 
         String clientUrl = request.getRequestURL().toString();
         User user = (User) session.getAttribute(USER_KEY);
-
-        System.out.println("session: " + user);
         if (user != null) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
@@ -146,7 +147,7 @@ public class AuthenticationFilter implements Filter {
 
 
         if (StringUtils.isNotEmpty(ticketId)) {
-            System.out.println("票据信息：" + ticketId);
+            LOGGER.debug("票据信息：" + ticketId);
             String url = casServerUrlPrefix + "/ticketValidate?ticket=" + ticketId;
             try {
                 HttpUtil client = new HttpUtil(url);
@@ -188,8 +189,8 @@ public class AuthenticationFilter implements Filter {
     /**
      * 路径匹配规则包含
      *
-     * @param request
-     * @return
+     * @param request HttpServletRequest
+     * @return boolean
      */
     private boolean isRequestUrlExcluded(final HttpServletRequest request) {
         /**
