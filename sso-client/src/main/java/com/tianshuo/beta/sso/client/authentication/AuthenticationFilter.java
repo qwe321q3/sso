@@ -42,7 +42,7 @@ public class AuthenticationFilter implements Filter {
     /**
      * 登录路径
      */
-    private String casServerUrlPrefix;
+    private String ssoServerUrlPrefix;
 
     /**
      * 路径策略
@@ -63,7 +63,7 @@ public class AuthenticationFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {
         pattern = filterConfig.getInitParameter("pattern");
-        casServerUrlPrefix = filterConfig.getInitParameter("casServerUrlPrefix");
+        ssoServerUrlPrefix = filterConfig.getInitParameter("ssoServerUrlPrefix");
         patternType = filterConfig.getInitParameter("patternType");
 
         if (StringUtils.isNotEmpty(patternType)) {
@@ -78,11 +78,11 @@ public class AuthenticationFilter implements Filter {
                     ignoreUrlPatternMatcherStrategyClass.setPattern(pattern);
                 }
             } catch (InstantiationException e) {
-                LOGGER.error("{}",e);
+                LOGGER.error("{}", e);
             } catch (IllegalAccessException e) {
-                LOGGER.error("{}",e);
+                LOGGER.error("{}", e);
             } catch (ClassNotFoundException e) {
-                LOGGER.error("{}",e);
+                LOGGER.error("{}", e);
             }
 
 
@@ -94,8 +94,8 @@ public class AuthenticationFilter implements Filter {
     /**
      * 校验成功回调方法
      *
-     * @param request  HttpServletRequest
-     * @param response HttpServletResponse
+     * @param request   HttpServletRequest
+     * @param response  HttpServletResponse
      * @param assertion 用户信息
      */
     protected void onSuccessfulValidation(final HttpServletRequest request, final HttpServletResponse response,
@@ -107,7 +107,7 @@ public class AuthenticationFilter implements Filter {
      * 校验失败回调方法
      *
      * @param request  HttpServletRequest
-     * @param response  HttpServletResponse
+     * @param response HttpServletResponse
      */
     protected void onFailedValidation(final HttpServletRequest request, final HttpServletResponse response) {
         // nothing to do here.
@@ -133,7 +133,7 @@ public class AuthenticationFilter implements Filter {
         if (StringUtils.isNotEmpty(logout) && StringUtils.isNotEmpty(ticketId)) {
             LOGGER.debug("收到退出通知，退出。");
             SessionHandler.removeSession(ticketId);
-            response.sendRedirect(casServerUrlPrefix + "/login");
+            response.sendRedirect(ssoServerUrlPrefix + "/login");
             return;
         }
 
@@ -148,7 +148,7 @@ public class AuthenticationFilter implements Filter {
 
         if (StringUtils.isNotEmpty(ticketId)) {
             LOGGER.debug("票据信息：" + ticketId);
-            String url = casServerUrlPrefix + "/ticketValidate?ticket=" + ticketId;
+            String url = ssoServerUrlPrefix + "/ticketValidate?ticket=" + ticketId;
             try {
                 HttpUtil client = new HttpUtil(url);
                 client.call();
@@ -165,19 +165,19 @@ public class AuthenticationFilter implements Filter {
                     filterChain.doFilter(servletRequest, servletResponse);
                     return;
                 } else {
-                    response.sendRedirect(casServerUrlPrefix + "/validateLogin?clientUrl=" + clientUrl);
+                    response.sendRedirect(ssoServerUrlPrefix + "/validateLogin?clientUrl=" + clientUrl);
                     return;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 onFailedValidation(request, response);
-                response.sendRedirect(casServerUrlPrefix + "/login?clientUrl=" + clientUrl);
+                response.sendRedirect(ssoServerUrlPrefix + "/login?clientUrl=" + clientUrl);
                 return;
             }
 
         }
 
-        response.sendRedirect(casServerUrlPrefix + "/validateLogin?clientUrl=" + clientUrl);
+        response.sendRedirect(ssoServerUrlPrefix + "/validateLogin?clientUrl=" + clientUrl);
         return;
     }
 
