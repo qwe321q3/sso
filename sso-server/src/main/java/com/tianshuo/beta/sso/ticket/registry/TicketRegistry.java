@@ -6,6 +6,7 @@ import java.util.Collection;
 
 /**
  * 票据注册接口
+ *
  * @author tianshuo
  */
 public interface TicketRegistry {

@@ -18,6 +18,7 @@ public interface ServiceTicket extends Ticket {
 
     /**
      * 获取服务信息/客户端url地址
+     *
      * @return 客户端url地址
      */
     String getService();

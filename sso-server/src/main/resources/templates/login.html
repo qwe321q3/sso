@@ -5,14 +5,14 @@
     <title>登录</title>
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
     <script>
-        function asb(){
+        function asb() {
             var url = "/login";
             var clientUrl = $("#clientUrl").text();
             if (clientUrl != null & clientUrl != '') {
                 url += "?clientUrl=" + clientUrl;
             }
             var form = document.getElementById("form1");
-            form.action =url;
+            form.action = url;
             form.submit();
             // $.ajax({
             //     url: url,
@@ -28,6 +28,7 @@
             //     }, contentType: "json"
             // });
         }
+
         // $(function () {
         //     $("#sbtn").click(function () {
         //
@@ -60,10 +61,10 @@
 <span id="clientUrl" style="display: none;" th:text="${#httpServletRequest.getParameter('clientUrl')}"></span>
 <form method="post" id="form1">
 
-用户名：<input id="loginName" name="loginName" value="tianshuo"/>
-密码 :<input id="password" type="password" name="password" value="tian1234"/>
-<br/>
-<button id="sbtn" onclick="asb();return false">提交</button>
+    用户名：<input id="loginName" name="loginName" value="tianshuo"/>
+    密码 :<input id="password" type="password" name="password" value="tian1234"/>
+    <br/>
+    <button id="sbtn" onclick="asb();return false">提交</button>
 </form>
 </body>
 </html>

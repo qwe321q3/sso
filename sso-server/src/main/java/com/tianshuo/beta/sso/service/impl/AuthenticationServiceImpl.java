@@ -69,11 +69,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         LoginTicket loginTicket = (LoginTicket) ticketRegistry.getTicket(ticketId);
 
         List<ServiceTicket> serviceTicketList = loginTicket.getServiceTicketList();
-
+        // TODO: 2020/1/7 后续优化成异步操作 临时try catch解决
         for (ServiceTicket serviceTicket : serviceTicketList) {
-            HttpUtil client = new HttpUtil(serviceTicket.getService());
-            client.setRequest("logout=logout&ticket=" + serviceTicket.getId());
-            client.call();
+
+            try {
+                HttpUtil client = new HttpUtil(serviceTicket.getService());
+                client.setRequest("logout=logout&ticket=" + serviceTicket.getId());
+                client.call();
+            } catch (Exception e) {
+                log.error("{}", e);
+                continue;
+            }
         }
 
         //删除登录key

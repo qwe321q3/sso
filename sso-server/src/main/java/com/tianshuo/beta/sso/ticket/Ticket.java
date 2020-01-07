@@ -2,6 +2,7 @@ package com.tianshuo.beta.sso.ticket;
 
 /**
  * 票据接口
+ *
  * @author tianshuo
  */
 public interface Ticket {

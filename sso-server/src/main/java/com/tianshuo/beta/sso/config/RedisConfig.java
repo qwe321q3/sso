@@ -10,6 +10,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
  * 设置redisTemplate的key，value序列化方式
+ *
  * @author tianshuo
  */
 @Configurable
@@ -25,8 +26,6 @@ public class RedisConfig {
         redisTemplate.setKeySerializer(redisSerializer);
         //value使用jackson2JsonRedisSerializer序列化
         redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
-//        redisTemplate.setHashKeySerializer(redisSerializer);
-//        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
         return redisTemplate;
     }
 

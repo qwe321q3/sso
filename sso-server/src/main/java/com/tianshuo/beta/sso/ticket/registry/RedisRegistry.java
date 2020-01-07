@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public final class RedisRegistry implements TicketRegistry {
 
-    @Value("${sso.token.isexpire}")
+    @Value("${sso.ticket.isexpire}")
     private long isExpire;
 
     @Autowired
