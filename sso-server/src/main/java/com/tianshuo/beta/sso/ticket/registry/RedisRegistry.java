@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  * @author tianshuo
  */
 @Slf4j
-@Service
+//@Service
 public final class RedisRegistry implements TicketRegistry {
 
     @Value("${sso.ticket.isexpire}")

@@ -17,7 +17,7 @@ import java.util.Map;
  * @author tianshuo
  */
 @Slf4j
-//@Service
+@Service
 public final class InMemoryRegistry implements TicketRegistry {
 
     /**
