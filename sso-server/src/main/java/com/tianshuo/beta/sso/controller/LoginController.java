@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginController {
 
 
-    @Value("${sso.default-homePage}")
+    @Value("${sso.default-homepage}")
     private String defaultHomePage;
 
     @Autowired
@@ -47,6 +47,7 @@ public class LoginController {
     @PostMapping("/login")
     public String login(User user, HttpServletResponse response, HttpServletRequest request) {
         String url = CommonUtil.constructClientUrl(request);
+        url = StringUtils.isEmpty(url) ? defaultHomePage : url;
         User userInfo = authenticationService.login(user);
         if (userInfo != null) {
             final LoginTicketImpl loginTicket = new LoginTicketImpl();
@@ -81,7 +82,6 @@ public class LoginController {
                 if (!StringUtils.isEmpty(url)) {
                     return "redirect:" + CommonUtil.constructUrlRedirectTo(serviceTicket, url);
                 } else {
-//                return "redirect:"+defaultHomePage;
                     return "index";
                 }
             }
@@ -89,27 +89,6 @@ public class LoginController {
         }
 
         return "login";
-
-//        if (user == null) {
-//            return "login";
-//        }
-//
-//        User userInfo = authenticationService.login(user);
-//        if (userInfo != null) {
-//            final LoginTicketImpl loginTicket = new LoginTicketImpl();
-//            loginTicket.setUser(userInfo);
-//            //设置cookie
-//            CookieUtil.addCookie(response, CookieUtil.TGC_KEY, loginTicket.getId(), -1);
-//            ServiceTicket serviceTicket = loginTicket.generateServiceTicket(loginTicket,url);
-//            ticketRegistry.addTicket(loginTicket);
-//            ticketRegistry.addTicket(serviceTicket);
-//            if (!StringUtils.isEmpty(url)) {
-//                url += (url.contains("?") ? "&" : "?") + "ticket=" + serviceTicket.getId();
-//                return "redirect:" + url;
-//            }
-//        }
-//
-//        return "index";
     }
 
 
