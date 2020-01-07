@@ -1,9 +1,7 @@
 package com.tianshuo.beta.sso.ticket;
 
 import com.tianshuo.beta.sso.model.User;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,8 +13,6 @@ import java.util.UUID;
  *
  * @author tianshuo
  */
-@Data
-@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
 public class LoginTicketImpl extends AbstractTicket implements LoginTicket, Serializable {
 
@@ -85,5 +81,12 @@ public class LoginTicketImpl extends AbstractTicket implements LoginTicket, Seri
     @Override
     public User getUserInfo() {
         return this.user;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginTicketImpl{" +
+                "id='" + this.getId() + '\'' +
+                '}';
     }
 }

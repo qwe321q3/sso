@@ -2,13 +2,15 @@ package com.tianshuo.beta.sso.ticket;
 
 import lombok.ToString;
 
+import java.io.Serializable;
+
 /**
  * 抽象票据类
  *
  * @author tianshuo
  */
 @ToString
-public abstract class AbstractTicket implements Ticket {
+public abstract class AbstractTicket implements Ticket, Serializable {
 
     protected String id;
 

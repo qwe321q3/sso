@@ -24,6 +24,7 @@ public interface LoginTicket extends Ticket {
 
     /**
      * 获取服务票据列表
+     * @return List<ServiceTicket>
      */
     List<ServiceTicket> getServiceTicketList();
 

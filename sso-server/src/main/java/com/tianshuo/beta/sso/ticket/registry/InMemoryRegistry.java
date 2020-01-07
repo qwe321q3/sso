@@ -28,6 +28,9 @@ public final class InMemoryRegistry implements TicketRegistry {
 
 
     public InMemoryRegistry() {
+        if (log.isDebugEnabled()) {
+            log.debug("使用默认内存存储ticket");
+        }
         this.cache = new HashMap<>();
     }
 

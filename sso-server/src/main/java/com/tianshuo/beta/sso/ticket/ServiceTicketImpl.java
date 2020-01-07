@@ -1,8 +1,6 @@
 package com.tianshuo.beta.sso.ticket;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -12,8 +10,6 @@ import java.util.UUID;
  *
  * @author tianshuo
  */
-@Data
-@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
 public class ServiceTicketImpl extends AbstractTicket implements ServiceTicket, Serializable {
 
@@ -69,5 +65,14 @@ public class ServiceTicketImpl extends AbstractTicket implements ServiceTicket, 
 
     public void setService(String service) {
         this.service = service;
+    }
+
+    @Override
+    public String toString() {
+        return "ServiceTicketImpl{" +
+                "loginTicket=" + loginTicket +
+                ", service='" + service + '\'' +
+                ", id='" + this.getId() + '\'' +
+                '}';
     }
 }

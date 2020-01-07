@@ -3,6 +3,7 @@ package com.tianshuo.beta.sso.ticket.registry;
 import com.tianshuo.beta.sso.ticket.Ticket;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -23,10 +24,16 @@ import java.util.concurrent.TimeUnit;
 @Service
 public final class RedisRegistry implements TicketRegistry {
 
+    @Value("${sso.token.isexpire}")
+    private long isExpire;
+
     @Autowired
     private RedisTemplate redisTemplate;
 
     public RedisRegistry() {
+        if (log.isDebugEnabled()) {
+            log.debug("使用Redis存储ticket");
+        }
     }
 
     @Override
@@ -37,13 +44,13 @@ public final class RedisRegistry implements TicketRegistry {
         }
 
         if (redisTemplate.hasKey(ticket.getId())) {
-            redisTemplate.delete(ticket.getId());
+            this.deleteTicket(ticket.getId());
         }
         if (log.isDebugEnabled()) {
             log.debug("Added ticket [{}] to registry", ticket.getId());
         }
         //默认2小时
-        redisTemplate.opsForValue().set(ticket.getId(), ticket, 60 * 2, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(ticket.getId(), ticket, isExpire, TimeUnit.MINUTES);
     }
 
     @Override
