@@ -23,7 +23,7 @@
 
 ```
  <filter>
-        <filter-name>CAS Authentication Filter</filter-name>
+        <filter-name>AuthenticationFilter</filter-name>
         <filter-class>com.tianshuo.beta.sso.client.authentication.AuthenticationFilter</filter-class>
         <init-param>
             <param-name>ssoServerUrlPrefix</param-name>
