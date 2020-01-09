@@ -165,7 +165,7 @@ public class AuthenticationFilter implements Filter {
                     filterChain.doFilter(servletRequest, servletResponse);
                     return;
                 } else {
-                    response.sendRedirect(ssoServerUrlPrefix + "/validateLogin?clientUrl=" + clientUrl);
+                    response.sendRedirect(ssoServerUrlPrefix + "/login?clientUrl=" + clientUrl);
                     return;
                 }
             } catch (Exception e) {
@@ -177,7 +177,7 @@ public class AuthenticationFilter implements Filter {
 
         }
 
-        response.sendRedirect(ssoServerUrlPrefix + "/validateLogin?clientUrl=" + clientUrl);
+        response.sendRedirect(ssoServerUrlPrefix + "/login?clientUrl=" + clientUrl);
         return;
     }
 

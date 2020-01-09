@@ -13,6 +13,7 @@ import com.tianshuo.beta.sso.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -39,6 +40,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      */
     @Override
     public User login(User user) {
+        if(StringUtils.isEmpty(user.getLoginName())||StringUtils.isEmpty(user.getPassword())){
+            return null;
+        }
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
         criteria.andLoginNameEqualTo(user.getLoginName());
