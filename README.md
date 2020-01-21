@@ -97,8 +97,8 @@ spring.redis.lettuce.pool.max-idle=12
 spring.redis.lettuce.pool.min-idle=8
 ```
 > 单点登录流程
-![单点登录](http://i2.tiimg.com/707625/3ac5cf833640d58f.jpg "单点登录")
+![单点登录](http://assets.processon.com/chart_image/5e09f012e4b06f72409d2c28.png "单点登录")
    
 > 单点登出流程
-![单点登出](http://i2.tiimg.com/707625/a693176896ca567e.jpg "单点登出")
+![单点登出](http://assets.processon.com/chart_image/5e16a3cce4b0f5a7ed06d401.png "单点登出")
 
