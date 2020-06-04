@@ -159,7 +159,7 @@ public class AuthenticationFilter implements Filter {
                         User userInfo = result.getData();
                         session.setAttribute(USER_KEY, userInfo);
                         SessionHandler.addSession(ticketId, session);
-                        onSuccessfulValidation(request, response, user);
+                        onSuccessfulValidation(request, response, userInfo);
                     }
 
                     filterChain.doFilter(servletRequest, servletResponse);
@@ -169,7 +169,7 @@ public class AuthenticationFilter implements Filter {
                     return;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.error("{}", e);
                 onFailedValidation(request, response);
                 response.sendRedirect(ssoServerUrlPrefix + "/login?clientUrl=" + clientUrl);
                 return;
