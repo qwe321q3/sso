@@ -1,18 +1,12 @@
 package com.tianshuo.beta.sso;
 
-import com.tianshuo.beta.sso.ticket.LoginTicket;
-import com.tianshuo.beta.sso.ticket.LoginTicketImpl;
-import com.tianshuo.beta.sso.ticket.Ticket;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.concurrent.TimeUnit;
 
 
 @RunWith(SpringRunner.class)

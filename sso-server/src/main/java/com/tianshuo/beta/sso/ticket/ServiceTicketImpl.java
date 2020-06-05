@@ -1,6 +1,5 @@
 package com.tianshuo.beta.sso.ticket;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
@@ -39,7 +38,7 @@ public class ServiceTicketImpl extends AbstractTicket implements ServiceTicket, 
     private String generateId(String loginTicketId) {
         StringBuffer stringBuffer = new StringBuffer(prx);
         stringBuffer.append("-");
-        stringBuffer.append(UUID.fromString(loginTicketId));
+        stringBuffer.append(UUID.nameUUIDFromBytes(loginTicketId.getBytes()).toString());
         return stringBuffer.toString();
     }
 
@@ -87,24 +86,5 @@ public class ServiceTicketImpl extends AbstractTicket implements ServiceTicket, 
                 ", service='" + service + '\'' +
                 ", id='" + this.getId() + '\'' +
                 '}';
-    }
-
-    public static void main(String[] args) {
-        String uuid = UUID.randomUUID().toString();
-
-        System.out.println(uuid);
-
-        String sid = UUID.nameUUIDFromBytes(uuid.getBytes()).toString();
-
-        String a = "68fc9fde-8991-4957-b7a1-c0ab4a6c034e";
-
-        System.out.println(sid);
-
-//        68fc9fde-8991-4957-b7a1-c0ab4a6c034e
-//        92f5d440-8970-3596-ad41-865a9fdf9354
-
-        System.out.println(UUID.nameUUIDFromBytes(a.getBytes()).toString());
-
-
     }
 }
