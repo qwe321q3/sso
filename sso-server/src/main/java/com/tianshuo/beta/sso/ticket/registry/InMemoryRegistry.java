@@ -8,8 +8,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 票据信息注册内存实现
@@ -32,7 +32,7 @@ public final class InMemoryRegistry implements TicketRegistry {
         if (log.isDebugEnabled()) {
             log.debug("使用默认内存存储ticket");
         }
-        this.cache = new HashMap<>();
+        this.cache = new ConcurrentHashMap<>();
     }
 
     /**
