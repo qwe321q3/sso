@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  * @author tianshuo
  */
 @Slf4j
-//@Service
+//@Component
 public final class RedisRegistry implements TicketRegistry {
 
     @Value("${sso.ticket.isexpire}")
@@ -28,6 +28,7 @@ public final class RedisRegistry implements TicketRegistry {
 
     @Autowired
     private RedisTemplate redisTemplate;
+    private String ticketId;
 
     public RedisRegistry() {
         if (log.isDebugEnabled()) {
@@ -69,6 +70,7 @@ public final class RedisRegistry implements TicketRegistry {
 
     @Override
     public Ticket getTicket(String ticketId) {
+        this.ticketId = ticketId;
         if (StringUtils.isEmpty(ticketId)) {
             return null;
         }

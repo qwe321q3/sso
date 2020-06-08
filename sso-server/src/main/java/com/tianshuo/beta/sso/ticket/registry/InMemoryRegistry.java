@@ -2,7 +2,7 @@ package com.tianshuo.beta.sso.ticket.registry;
 
 import com.tianshuo.beta.sso.ticket.Ticket;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author tianshuo
  */
 @Slf4j
-@Service
+@Component
 public final class InMemoryRegistry implements TicketRegistry {
 
     /**
